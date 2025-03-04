@@ -2,7 +2,6 @@ import pygame, sys, subprocess
 import pygame.freetype
 import pygame_textinput
 
-
 class Colors:
     # Helper class for colors
     white = (255, 255, 255)
@@ -73,23 +72,21 @@ class Actions:
             player2 = User(player2_input.value)
             player1.login()
             player2.login()
-            subprocess.Popen(["python", "main.py"])
+            subprocess.run(["python", "main.py"] + users)
             pygame.quit()
             sys.exit()
 
 
+
+
+
 users = []
-
-
 class User:
     def __init__(self, username):
         self.username = username
 
     def login(self):
-        userObj = {
-            'username': self.username
-        }
-        users.append(userObj)
+        users.append(self.username)
 
 
 def initializeInputs():
