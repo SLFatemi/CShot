@@ -1,5 +1,5 @@
-import pygame
+import pygame,sys
 import pygame.freetype
-from login import users
+users = sys.argv[1:]
+print(f"PLayer 1 : {users[0]}, Player 2 : {users[1]}")
 
-print(users)
