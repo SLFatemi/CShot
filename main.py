@@ -1,6 +1,6 @@
 import pygame, sys, subprocess
 import pygame.freetype
-import emoji
+from scipy.stats import burr12
 
 users = sys.argv[1:]
 
@@ -83,6 +83,34 @@ class Emojis:
         screen.blit(emoji_img, (self.posX, self.posY))
 
 
+class Player:
+    def __init__(self, score=0, bullets=20):
+        self.score = score
+        self.bullets = bullets
+        # TODO TEMP (HAVE TO BE RANDOM)
+        self.posX = 0
+        self.posY = 0
+
+    def moveUp(self):
+        pass
+
+    def moveDown(self):
+        pass
+
+    def moveLeft(self):
+        pass
+
+    def moveRight(self):
+        pass
+
+    def shoot(self):
+        if (self.bullets > 0):
+            self.bullets -= 1
+
+    def calScore(self, oldposX, oldposY):
+        pass
+
+
 def display_GUI_STATIC():
     player1_text = Texts('Player1', 145, 80, Colors.muted_red, 20)
     player1_text.displayText()
@@ -132,21 +160,32 @@ if __name__ == "__main__":
     pygame.display.set_caption('CShot')
     pygame.font.init()
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
-    start_time = pygame.time.get_ticks()
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
     clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()
+    count_down_time = 60
+    player1 = Player()
+    player2 = Player()
     running = True
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(30)
         screen.fill(Colors.dark_gray)
-        e_time = (pygame.time.get_ticks() - start_time) / 1000
+        e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            # USER USED A KEY
+            elif (event.type == pygame.KEYDOWN):
+                # SPACE (PLAYER 1 SHOOTING)
+                if (event.key == pygame.K_SPACE):
+                    player1.useBullet()
+                # ENTER (PLAYER 2 SHOOTING)
+                if (event.key == pygame.K_RETURN):
+                    player2.useBullet()
         display_GUI_STATIC()
-        display_GUI_UPDATE()
+        display_GUI_UPDATE(player1.bullets, player1.score, player2.bullets, player1.score)
         pygame.display.flip()
     pygame.quit()

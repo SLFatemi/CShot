@@ -115,15 +115,15 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
         screen.fill(Colors.dark_gray)
-        gameName = Texts('C', 560, 152, Colors.muted_red, 210)
+        gameName = Texts('C', 560, 172, Colors.muted_red, 210)
         gameName.displayText()
-        gameName = Texts('Shot', 677, 142, Colors.white, 75)
+        gameName = Texts('Shot', 677, 162, Colors.white, 75)
         gameName.displayText()
-        gameName_emoji = Emojis(118, WIDTH // 2 + 33, 74, 'logo.png')
+        gameName_emoji = Emojis(118, WIDTH // 2 + 33, 94, 'logo.png')
         gameName_emoji.displayEmoji()
-        startButton = Buttons("Start", WIDTH // 2, 365, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
+        startButton = Buttons("Start", WIDTH // 2, 395, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
                               Actions.start_game)
-        exitButton = Buttons("Exit", WIDTH // 2, 465, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray,
+        exitButton = Buttons("Exit", WIDTH // 2, 495, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray,
                              36,
                              Actions.exit_game)
         startButton.displayButton()
