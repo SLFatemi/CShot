@@ -120,7 +120,7 @@ if __name__ == "__main__":
     player1_input = pygame_textinput.TextInputVisualizer()
     player2_input = pygame_textinput.TextInputVisualizer()
     initializeInputs()
-
+    bg_img = pygame.image.load('assets/bg.jpg')
     clock = pygame.time.Clock()
     running = True
     active_input = 0
@@ -154,6 +154,7 @@ if __name__ == "__main__":
                     active_input = 1
 
         screen.fill(Colors.dark_gray)
+        screen.blit(bg_img, (0, 0))
         player1_text = Texts('Player 1 :', 218, 200, Colors.muted_red, 28)
         player1_text.displayText()
         player2_text = Texts('Player 2 :', 218, 500, Colors.muted_blue, 28)

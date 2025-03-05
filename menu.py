@@ -106,8 +106,8 @@ if __name__ == "__main__":
     mixer.music.load('assets/menu.sf.mp3')
     mixer.music.play(-1)
     WIDTH, HEIGHT = 1280, 720
+    bg_img = pygame.image.load('assets/bg.jpg')
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
     clock = pygame.time.Clock()
     running = True
 
@@ -118,6 +118,7 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
         screen.fill(Colors.dark_gray)
+        screen.blit(bg_img, (0, 0))
         gameName = Texts('C', 560, 172, Colors.muted_red, 210)
         gameName.displayText()
         gameName = Texts('Shot', 677, 162, Colors.white, 75)

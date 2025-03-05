@@ -257,6 +257,7 @@ if __name__ == "__main__":
     while running:
         clock.tick(90)
         screen.fill(Colors.dark_gray)
+
         e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
         player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
         player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
