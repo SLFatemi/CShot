@@ -179,11 +179,11 @@ class Time(Target):
 def display_GUI_STATIC():
     player1_text = Texts('Player1', 145, 80, Colors.muted_red, 20)
     player1_text.displayText()
-    player1_emoji = Images(36, 18, 60, 'player.png')
+    player1_emoji = Images(36, 18, 60, 'player1.png')
     player1_emoji.displayImage()
     player2_text = Texts('Player2', WIDTH - 140, 80, Colors.muted_blue, 20)
     player2_text.displayText()
-    player2_emoji = Images(36, WIDTH - 268, 60, 'player.png')
+    player2_emoji = Images(36, WIDTH - 268, 60, 'player2.png')
     player2_emoji.displayImage()
 
 
@@ -201,7 +201,7 @@ def display_GUI_UPDATE(p1_bullet_count=20, p1_score=0, p2_bullet_count=20, p2_sc
     player1_bullets.displayText()
     player1_bullets_count = Texts(f"{p1_bullet_count}", 185, 123, Colors.muted_gray, 14)
     player1_bullets_count.displayText()
-    player1_bullets_emoji = Images(24, 20, 110, 'bullet.png')
+    player1_bullets_emoji = Images(24, 25, 110, 'bullet.png')
     player1_bullets_emoji.displayImage()
     player1_score = Texts('Score', 90, 163, Colors.muted_gray, 14)
     player1_score.displayText()
@@ -214,7 +214,7 @@ def display_GUI_UPDATE(p1_bullet_count=20, p1_score=0, p2_bullet_count=20, p2_sc
     player2_bullets.displayText()
     player2_bullets_count = Texts(f"{p2_bullet_count}", WIDTH - 100, 123, Colors.muted_gray, 14)
     player2_bullets_count.displayText()
-    player2_bullets_emoji = Images(24, WIDTH - 265, 110, 'bullet.png')
+    player2_bullets_emoji = Images(24, WIDTH - 260, 110, 'bullet.png')
     player2_bullets_emoji.displayImage()
     player2_score = Texts('Score', WIDTH - 190, 163, Colors.muted_gray, 14)
     player2_score.displayText()
