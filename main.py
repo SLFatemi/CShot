@@ -130,7 +130,7 @@ class Player:
 
     def checkHit(self, targets):
         for target in targets:
-            if (target.posX < self.posX < target.posX + 36 and target.posY - 5 < self.posY < target.posY + 36):
+            if (target.posX - 6 < self.posX < target.posX + 36 and target.posY - 6 < self.posY < target.posY + 36):
                 target.reset()
                 if (target.__class__.__name__ == 'Ammo'):
                     self.bullets += 15
