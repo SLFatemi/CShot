@@ -82,14 +82,14 @@ class Actions:
         sys.exit()
 
 
-class Emojis:
+class Images:
     def __init__(self, size, posX, posY, src):
         self.size = size
         self.posX = posX
         self.posY = posY
         self.src = f"assets/{src}"
 
-    def displayEmoji(self):
+    def displayImage(self):
         emoji_img = pygame.image.load(self.src)
         emoji_img = pygame.transform.smoothscale(emoji_img, (self.size, self.size))
         screen.blit(emoji_img, (self.posX, self.posY))
@@ -120,8 +120,8 @@ if __name__ == "__main__":
         gameName.displayText()
         gameName = Texts('Shot', 677, 162, Colors.white, 75)
         gameName.displayText()
-        gameName_emoji = Emojis(118, WIDTH // 2 + 33, 94, 'logo.png')
-        gameName_emoji.displayEmoji()
+        gameName_emoji = Images(118, WIDTH // 2 + 33, 94, 'logo.png')
+        gameName_emoji.displayImage()
         startButton = Buttons("Start", WIDTH // 2, 395, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
                               Actions.start_game)
         exitButton = Buttons("Exit", WIDTH // 2, 495, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray,
