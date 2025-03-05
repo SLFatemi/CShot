@@ -107,6 +107,7 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('Login')
     pygame.font.init()
+    pygame.key.set_repeat(300, 50)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 24)
@@ -160,10 +161,10 @@ if __name__ == "__main__":
 
         if active_input == 0:
             player1_input.update(valid_inputs)
-            pygame.draw.rect(screen, (255, 255, 255), (368, 178, 300, 44), 2)
+            pygame.draw.rect(screen, Colors.muted_gray, (368, 178, 300, 44), 2)
         else:
             player2_input.update(valid_inputs)
-            pygame.draw.rect(screen, (255, 255, 255), (368, 478, 300, 44), 2)
+            pygame.draw.rect(screen, Colors.muted_gray, (368, 478, 300, 44), 2)
 
         screen.blit(player1_input.surface, (378, 188))
         screen.blit(player2_input.surface, (378, 488))

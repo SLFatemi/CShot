@@ -84,28 +84,40 @@ class Emojis:
 
 
 class Player:
-    def __init__(self, score=0, bullets=20):
+    def __init__(self, score=0, bullets=2000):
         self.score = score
         self.bullets = bullets
         # TODO TEMP (HAVE TO BE RANDOM)
-        self.posX = 0
-        self.posY = 0
+        self.posX = WIDTH // 2
+        self.posY = HEIGHT // 2
+        self.bulletHoles = []
 
     def moveUp(self):
-        pass
+        # DONT GO OVER UI
+        if (self.posY > 200):
+            self.posY -= 10
 
     def moveDown(self):
-        pass
+        if (self.posY < 680):
+            self.posY += 10
 
     def moveLeft(self):
-        pass
+        if (self.posX > 30):
+            self.posX -= 10
 
     def moveRight(self):
-        pass
+        if (self.posX < 1240):
+            self.posX += 10
 
-    def shoot(self):
+    def shoot(self, player):
         if (self.bullets > 0):
             self.bullets -= 1
+            if (player == 1):
+                bullet_hole = Emojis(8, self.posX, self.posY, 'bulletholered.png')
+                self.bulletHoles.append(bullet_hole)
+            elif (player == 2):
+                bullet_hole = Emojis(8, self.posX, self.posY, 'bulletholeblue.png')
+                self.bulletHoles.append(bullet_hole)
 
     def calScore(self, oldposX, oldposY):
         pass
@@ -122,7 +134,7 @@ def display_GUI_STATIC():
     player2_emoji.displayEmoji()
 
 
-def display_GUI_UPDATE(p1_bullet_count=10, p1_score=0, p2_bullet_count=10, p2_score=0):
+def display_GUI_UPDATE(p1_bullet_count=20, p1_score=0, p2_bullet_count=20, p2_score=0):
     timer_text = Texts(f"Timer : {int(e_time)}s", WIDTH // 2, 30, Colors.white, 18)
     timer_text.displayText()
     timer_emoji = Emojis(36, 495, 10, 'stopwatch.png')
@@ -159,6 +171,7 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('CShot')
     pygame.font.init()
+    pygame.key.set_repeat(500, 50)
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -173,18 +186,44 @@ if __name__ == "__main__":
     while running:
         clock.tick(30)
         screen.fill(Colors.dark_gray)
-        e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
+        e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000 if count_down_time - (
+                pygame.time.get_ticks() - start_time) // 1000 > 0 else 0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
-                # SPACE (PLAYER 1 SHOOTING)
+                # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                 if (event.key == pygame.K_SPACE):
-                    player1.shoot()
-                # ENTER (PLAYER 2 SHOOTING)
+                    player1.shoot(1)
+                # ///////////////////////////////////////// PLAYER 1 MOVEMENTS /////////////////////////////////////////
+                if (event.key == pygame.K_w):
+                    player1.moveUp()
+                if (event.key == pygame.K_s):
+                    player1.moveDown()
+                if (event.key == pygame.K_a):
+                    player1.moveLeft()
+                if (event.key == pygame.K_d):
+                    player1.moveRight()
+                # ///////////////////////////////////////// PLAYER 2 MOVEMENTS /////////////////////////////////////////
+                if (event.key == pygame.K_UP):
+                    player2.moveUp()
+                if (event.key == pygame.K_DOWN):
+                    player2.moveDown()
+                if (event.key == pygame.K_LEFT):
+                    player2.moveLeft()
+                if (event.key == pygame.K_RIGHT):
+                    player2.moveRight()
+                # ///////////////////////////////////////// ENTER (PLAYER 2 SHOOTING) /////////////////////////////////////////
                 if (event.key == pygame.K_RETURN):
-                    player2.shoot()
+                    player2.shoot(2)
+        pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
+        #  DISPLAY SHOTS
+        for bulletHoleP1 in player1.bulletHoles:
+            bulletHoleP1.displayEmoji()
+        #  DISPLAY SHOTS
+        for bulletHoleP2 in player2.bulletHoles:
+            bulletHoleP2.displayEmoji()
         display_GUI_STATIC()
         display_GUI_UPDATE(player1.bullets, player1.score, player2.bullets, player1.score)
         pygame.display.flip()
