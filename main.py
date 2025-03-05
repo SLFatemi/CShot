@@ -3,7 +3,6 @@ import random
 from pygame import mixer
 import pygame, sys, subprocess
 import pygame.freetype
-
 users = sys.argv[1:]
 
 
@@ -235,13 +234,16 @@ def display_gameover_screen(p1_score, p2_score):
 #////Winning exception and condition
     if p1_score > p2_score:
         Win_text = Texts("Player 1 Wins! Brutal.", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_red, 25)
-        Win_text.displayText
+        Win_text.displayText()
     elif p2_score > p1_score:
         Win_text = Texts("Player 2 Wins! Brutal", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_blue, 25)
         Win_text.displayText()
     else:
         Win_text = Texts("Draw!", WIDTH // 2, HEIGHT // 2 + 150, Colors.white, 25)
         Win_text.displayText()
+    exit_button = Buttons("Exit", WIDTH // 2, HEIGHT - 100, 200, 50, Colors.muted_gray, Colors.gray, Colors.white, 20, 
+                         action=lambda: pygame.quit() or sys.exit())
+    exit_button.displayButton()
 
 if __name__ == "__main__":
     pygame.init()
@@ -253,6 +255,7 @@ if __name__ == "__main__":
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    
 
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
@@ -279,7 +282,7 @@ if __name__ == "__main__":
         screen.fill(Colors.dark_gray)
         if player1.bullets == 0 and player2.bullets == 0 and game_state == "playing" :
             display_gameover_screen(player1.score, player2.score)
-        else:
+        else:  
             target1.displayTarget()
             target2.displayTarget()
             target3.displayTarget()
@@ -303,7 +306,7 @@ if __name__ == "__main__":
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
                 # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
-                if (event.key == pygame.K_SPACE):
+                if (event.key == pygame.K_SPACE):                    
                     player1.shoot(1)
                 # ///////////////////////////////////////// PLAYER 1 MOVEMENTS /////////////////////////////////////////
                 if (event.key == pygame.K_w):
@@ -333,4 +336,5 @@ if __name__ == "__main__":
                 extra_time1.reset()
 
         pygame.display.flip()
+    
     pygame.quit()
