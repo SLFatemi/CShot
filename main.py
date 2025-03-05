@@ -297,13 +297,11 @@ if __name__ == "__main__":
     pygame.time.set_timer(ammo_spawn, 10000)
     pygame.time.set_timer(time_spawn, 5000)
     running = True
-    game_state = "playing"
-
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(90)
         screen.fill(Colors.dark_gray)
-        if player1.bullets == 0 and player2.bullets == 0 and game_state == "playing":
+        if (player1.bullets == 0 and player2.bullets == 0) or (player1.time == 0 and player2.time == 0):
             display_gameover_screen(player1.score, player2.score)
         else:
             target1.displayTarget()
@@ -323,6 +321,7 @@ if __name__ == "__main__":
                 bulletHoleP2.displayImage()
             display_GUI_STATIC()
             display_GUI_UPDATE(player1.bullets, player1.score, player2.bullets, player2.score)
+        # ///////////////////////////////////////// END OF ELSE ///////////////////////////////////////////////
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -357,7 +356,6 @@ if __name__ == "__main__":
                 ammo2.reset()
             elif (event.type == time_spawn):
                 extra_time1.reset()
-
         pygame.display.flip()
 
     pygame.quit()
