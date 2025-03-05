@@ -130,7 +130,7 @@ class Player:
 
     def checkHit(self, targets):
         for target in targets:
-            if (target.posX < self.posX < target.posX + 36 and target.posY < self.posY < target.posY + 36):
+            if (target.posX - 6 < self.posX < target.posX + 36 and target.posY - 6 < self.posY < target.posY + 36):
                 target.reset()
                 if (target.__class__.__name__ == 'Ammo'):
                     self.bullets += 15
@@ -228,6 +228,8 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('CShot')
     pygame.font.init()
+    icon = pygame.image.load('assets/icon.jpg')
+    pygame.display.set_icon(icon)
     pygame.key.set_repeat(500, 50)
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
     WIDTH, HEIGHT = 1280, 720
@@ -255,6 +257,7 @@ if __name__ == "__main__":
     while running:
         clock.tick(90)
         screen.fill(Colors.dark_gray)
+
         e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
         player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
         player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
