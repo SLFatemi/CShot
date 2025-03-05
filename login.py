@@ -2,7 +2,7 @@ import pygame, sys, subprocess
 import pygame.freetype
 import pygame_textinput
 import string
-
+from pygame import mixer
 
 class Colors:
     # Helper class for colors
@@ -111,7 +111,8 @@ if __name__ == "__main__":
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 24)
-
+    mixer.music.load('assets/login.sf.mp3')
+    mixer.music.play(-1)
     # INITIALIZE INPUTS
     player1_input = pygame_textinput.TextInputVisualizer()
     player2_input = pygame_textinput.TextInputVisualizer()
@@ -166,7 +167,9 @@ if __name__ == "__main__":
             player2_input.update(valid_inputs)
             pygame.draw.rect(screen, Colors.muted_gray, (368, 478, 300, 44), 2)
 
+
         screen.blit(player1_input.surface, (378, 188))
         screen.blit(player2_input.surface, (378, 488))
         pygame.display.flip()
     pygame.quit()
+
