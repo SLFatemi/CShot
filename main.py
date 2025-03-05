@@ -181,10 +181,10 @@ if __name__ == "__main__":
             elif (event.type == pygame.KEYDOWN):
                 # SPACE (PLAYER 1 SHOOTING)
                 if (event.key == pygame.K_SPACE):
-                    player1.useBullet()
+                    player1.shoot()
                 # ENTER (PLAYER 2 SHOOTING)
                 if (event.key == pygame.K_RETURN):
-                    player2.useBullet()
+                    player2.shoot()
         display_GUI_STATIC()
         display_GUI_UPDATE(player1.bullets, player1.score, player2.bullets, player1.score)
         pygame.display.flip()
