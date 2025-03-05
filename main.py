@@ -1,6 +1,6 @@
 import math
 import random
-
+from pygame import mixer
 import pygame, sys, subprocess
 import pygame.freetype
 
