@@ -1,6 +1,8 @@
 import pygame, sys, subprocess
 import pygame.freetype
 import pygame_textinput
+import string
+
 
 class Colors:
     # Helper class for colors
@@ -8,6 +10,9 @@ class Colors:
     gray = (168, 168, 168)
     dark_gray = (36, 36, 36)
     muted_gray = (124, 124, 124)
+    muted_red = (150, 50, 50)
+    muted_green = (50, 150, 50)
+    muted_blue = (50, 50, 150)
 
 
 class Texts:
@@ -72,15 +77,14 @@ class Actions:
             player2 = User(player2_input.value)
             player1.login()
             player2.login()
-            subprocess.run(["python", "main.py"] + users)
+            subprocess.Popen(["python", "main.py"] + users)
             pygame.quit()
             sys.exit()
 
 
-
-
-
 users = []
+
+
 class User:
     def __init__(self, username):
         self.username = username
@@ -120,23 +124,23 @@ if __name__ == "__main__":
         events = pygame.event.get()
         valid_inputs = []
         for event in events:
-            if event.type == pygame.QUIT:
+            if (event.type == pygame.QUIT):
                 running = False
-            elif event.type == pygame.KEYDOWN:
+            elif (event.type == pygame.KEYDOWN):
                 # CHECK IF TAB IS PRESSED
-                if event.key == pygame.K_TAB:
+                if (event.key == pygame.K_TAB):
                     active_input = 1 - active_input
-                # CHECK IF THE INPUT IS VALID (NO SPECIAL CHARACTER ALLOWED)
-                elif event.unicode.isalnum():
+                # CHECK IF THE INPUT IS VALID (NO SPECIAL CHARACTER ALLOWED , ONLY ENGLISH)
+                elif (event.unicode.isalnum() and event.unicode in string.ascii_letters + string.digits):
                     # FIND THE ACTIVE INPUT
                     input_text = player1_input.value if active_input == 0 else player2_input.value
                     # CHECK IF THE INPUT HAS VALID LENGTH
-                    if len(input_text) < 8:
+                    if (len(input_text) < 8):
                         valid_inputs.append(event)
-                elif event.key == pygame.K_BACKSPACE or event.key == pygame.K_DELETE:
+                elif (event.key == pygame.K_BACKSPACE or event.key == pygame.K_DELETE):
                     # SHOULD STILL BE ABLE TO DELETE CHARACTERS
                     valid_inputs.append(event)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif (event.type == pygame.MOUSEBUTTONDOWN):
                 # JUMP OVER INPUTS WITH MOUSE
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if 108 < mouse_x < 778 and 170 < mouse_y < 260:
@@ -145,9 +149,9 @@ if __name__ == "__main__":
                     active_input = 1
 
         screen.fill(Colors.dark_gray)
-        player1_text = Texts('Player 1 :', 218, 200, Colors.white, 28)
+        player1_text = Texts('Player 1 :', 218, 200, Colors.muted_red, 28)
         player1_text.displayText()
-        player2_text = Texts('Player 2 :', 218, 500, Colors.white, 28)
+        player2_text = Texts('Player 2 :', 218, 500, Colors.muted_blue, 28)
         player2_text.displayText()
 
         startBtn = Buttons('Start', 1080, 360, 160, 60, Colors.muted_gray, Colors.gray, Colors.dark_gray, 24,
@@ -156,10 +160,10 @@ if __name__ == "__main__":
 
         if active_input == 0:
             player1_input.update(valid_inputs)
-            pygame.draw.rect(screen, (255, 255, 255), (368, 178, 300, 44), 3)
+            pygame.draw.rect(screen, (255, 255, 255), (368, 178, 300, 44), 2)
         else:
             player2_input.update(valid_inputs)
-            pygame.draw.rect(screen, (255, 255, 255), (368, 478, 300, 44), 3)
+            pygame.draw.rect(screen, (255, 255, 255), (368, 478, 300, 44), 2)
 
         screen.blit(player1_input.surface, (378, 188))
         screen.blit(player2_input.surface, (378, 488))

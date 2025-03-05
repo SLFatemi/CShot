@@ -1,3 +1,5 @@
+from sys import winver
+
 import pygame, sys, subprocess
 import pygame.freetype
 
@@ -8,6 +10,9 @@ class Colors:
     gray = (168, 168, 168)
     dark_gray = (36, 36, 36)
     muted_gray = (124, 124, 124)
+    muted_red = (150, 50, 50)
+    muted_green = (50, 150, 50)
+    muted_blue = (50, 50, 150)
 
 
 class Texts:
@@ -77,10 +82,23 @@ class Actions:
         sys.exit()
 
 
+class Emojis:
+    def __init__(self, size, posX, posY, src):
+        self.size = size
+        self.posX = posX
+        self.posY = posY
+        self.src = f"assets/{src}"
+
+    def displayEmoji(self):
+        emoji_img = pygame.image.load(self.src)
+        emoji_img = pygame.transform.smoothscale(emoji_img, (self.size, self.size))
+        screen.blit(emoji_img, (self.posX, self.posY))
+
+
 # //////////////////////////////////////////// ASSETS INITIALIZE ////////////////////////////////////////////
 if __name__ == "__main__":
     pygame.init()
-    pygame.display.set_caption('CShot')
+    pygame.display.set_caption('Menu')
     pygame.font.init()
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
 
@@ -97,8 +115,12 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
         screen.fill(Colors.dark_gray)
-        gameName = Texts('CShot', 640, 92, Colors.white, 75)
+        gameName = Texts('C', 560, 152, Colors.muted_red, 210)
         gameName.displayText()
+        gameName = Texts('Shot', 677, 142, Colors.white, 75)
+        gameName.displayText()
+        gameName_emoji = Emojis(118, WIDTH // 2 + 33, 74, 'logo.png')
+        gameName_emoji.displayEmoji()
         startButton = Buttons("Start", WIDTH // 2, 365, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
                               Actions.start_game)
         exitButton = Buttons("Exit", WIDTH // 2, 465, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray,
