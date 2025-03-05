@@ -223,6 +223,25 @@ def display_GUI_UPDATE(p1_bullet_count=20, p1_score=0, p2_bullet_count=20, p2_sc
     player2_score_emoji = Images(24, WIDTH - 260, 150, 'score.png')
     player2_score_emoji.displayImage()
 
+def display_gameover_screen(p1_score, p2_score):
+    screen.fill(Colors.dark_gray)
+    go_text = Texts("The Game is Over!", WIDTH // 2, HEIGHT // 4, Colors.white, 40 )
+    go_text.displayText()
+
+    p1_final_score = Texts(f"Player 1 Score: {p1_score}", WIDTH // 2, HEIGHT // 2 - 50, Colors.muted_red, 20)
+    p1_final_score.displayText()
+    p2_final_score = Texts(f"Player 2 Score: {p2_score}", WIDTH // 2, HEIGHT // 2 + 50, Colors.muted_blue, 20)
+    p2_final_score.displayText()
+#////Winning exception and condition
+    if p1_score > p2_score:
+        Win_text = Texts("Player 1 Wins! Brutal.", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_red, 25)
+        Win_text.displayText
+    elif p2_score > p1_score:
+        Win_text = Texts("Player 2 Wins! Brutal", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_blue, 25)
+        Win_text.displayText()
+    else:
+        Win_text = Texts("Draw!", WIDTH // 2, HEIGHT // 2 + 150, Colors.white, 25)
+        Win_text.displayText()
 
 if __name__ == "__main__":
     pygame.init()
@@ -251,16 +270,33 @@ if __name__ == "__main__":
     time_spawn = pygame.USEREVENT + 2
     pygame.time.set_timer(ammo_spawn, 10000)
     pygame.time.set_timer(time_spawn, 5000)
-
     running = True
+    game_state = "playing"
+
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(90)
         screen.fill(Colors.dark_gray)
-
-        e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
-        player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
-        player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
+        if player1.bullets == 0 and player2.bullets == 0 and game_state == "playing" :
+            display_gameover_screen(player1.score, player2.score)
+        else:
+            target1.displayTarget()
+            target2.displayTarget()
+            target3.displayTarget()
+            extra_time1.displayTarget()
+            ammo1.displayTarget()
+            ammo2.displayTarget()
+            e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
+            player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
+            player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
+            pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
+            for bulletHoleP1 in player1.bulletHoles:
+                bulletHoleP1.displayImage()
+            #  DISPLAY SHOTS
+            for bulletHoleP2 in player2.bulletHoles:
+                bulletHoleP2.displayImage()            
+            display_GUI_STATIC()
+            display_GUI_UPDATE(player1.bullets, player1.score, player2.bullets, player2.score)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -295,21 +331,6 @@ if __name__ == "__main__":
                 ammo2.reset()
             elif (event.type == time_spawn):
                 extra_time1.reset()
-        pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
-        # DISPLAY TARGETS
-        target1.displayTarget()
-        target2.displayTarget()
-        target3.displayTarget()
-        extra_time1.displayTarget()
-        ammo1.displayTarget()
-        ammo2.displayTarget()
-        #  DISPLAY SHOTS
-        for bulletHoleP1 in player1.bulletHoles:
-            bulletHoleP1.displayImage()
-        #  DISPLAY SHOTS
-        for bulletHoleP2 in player2.bulletHoles:
-            bulletHoleP2.displayImage()
-        display_GUI_STATIC()
-        display_GUI_UPDATE(player1.bullets, player1.score, player2.bullets, player2.score)
+
         pygame.display.flip()
     pygame.quit()
