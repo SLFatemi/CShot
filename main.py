@@ -184,6 +184,14 @@ class Actions:
         sys.exit()
 
 
+def play_sound_once(src):
+    sound = pygame.mixer.Sound(f"assets/{src}")
+    global end_game_sound_played
+    if not end_game_sound_played:
+        sound.play()
+        end_game_sound_played = True
+
+
 def display_GUI_STATIC():
     player1_text = Texts('Player1', 145, 80, Colors.muted_red, 20)
     player1_text.displayText()
@@ -245,12 +253,16 @@ def display_gameover_screen(p1_score, p2_score):
     if p1_score > p2_score:
         Win_text = Texts("Player 1 Wins! Brutal.", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_red, 25)
         Win_text.displayText()
+        play_sound_once('win.sf.mp3')
     elif p2_score > p1_score:
         Win_text = Texts("Player 2 Wins! Brutal", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_blue, 25)
         Win_text.displayText()
+        play_sound_once('win.sf.mp3')
     else:
         Win_text = Texts("Draw!", WIDTH // 2, HEIGHT // 2 + 150, Colors.white, 25)
         Win_text.displayText()
+        play_sound_once('draw.sf.mp3')
+
     exit_button = Buttons("Exit", WIDTH // 2, HEIGHT - 100, 200, 50, Colors.muted_gray, Colors.gray, Colors.white, 20,
                           Actions.exit_game)
     exit_button.displayButton()
@@ -260,6 +272,7 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('CShot')
     pygame.font.init()
+    end_game_sound_played = False
     icon = pygame.image.load('assets/icon.jpg')
     pygame.display.set_icon(icon)
     pygame.key.set_repeat(500, 50)
