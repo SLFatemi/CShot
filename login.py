@@ -4,6 +4,7 @@ import pygame_textinput
 import string
 from pygame import mixer
 
+
 class Colors:
     # Helper class for colors
     white = (255, 255, 255)
@@ -107,6 +108,8 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('Login')
     pygame.font.init()
+    icon = pygame.image.load('assets/icon.jpg')
+    pygame.display.set_icon(icon)
     pygame.key.set_repeat(300, 50)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -167,9 +170,7 @@ if __name__ == "__main__":
             player2_input.update(valid_inputs)
             pygame.draw.rect(screen, Colors.muted_gray, (368, 478, 300, 44), 2)
 
-
         screen.blit(player1_input.surface, (378, 188))
         screen.blit(player2_input.surface, (378, 488))
         pygame.display.flip()
     pygame.quit()
-

@@ -100,6 +100,8 @@ if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption('Menu')
     pygame.font.init()
+    icon = pygame.image.load('assets/icon.jpg')
+    pygame.display.set_icon(icon)
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
     mixer.music.load('assets/menu.sf.mp3')
     mixer.music.play(-1)
@@ -108,7 +110,7 @@ if __name__ == "__main__":
 
     clock = pygame.time.Clock()
     running = True
-    
+
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(144)
@@ -131,4 +133,3 @@ if __name__ == "__main__":
         exitButton.displayButton()
         pygame.display.flip()
     pygame.quit()
-
