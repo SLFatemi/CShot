@@ -1,5 +1,5 @@
 from sys import winver
-
+from pygame import mixer
 import pygame, sys, subprocess
 import pygame.freetype
 
@@ -101,13 +101,14 @@ if __name__ == "__main__":
     pygame.display.set_caption('Menu')
     pygame.font.init()
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
-
+    mixer.music.load('assets/menu.sf.mp3')
+    mixer.music.play(-1)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
     clock = pygame.time.Clock()
     running = True
-
+    
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(144)
@@ -130,3 +131,4 @@ if __name__ == "__main__":
         exitButton.displayButton()
         pygame.display.flip()
     pygame.quit()
+
