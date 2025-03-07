@@ -37,7 +37,6 @@ In CShot, your crosshair is hidden, meaning you have to guess its position based
 2. Run the game executable or open the project in your preferred IDE.
 
 ## 🚀 Future Features
-- Sound effects and background music
 - More game modes
 - Improved UI and animations
 
