@@ -1,4 +1,3 @@
-from sys import winver
 from pygame import mixer
 import pygame, sys, subprocess
 import pygame.freetype
