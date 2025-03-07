@@ -1,7 +1,5 @@
 import math
 import random
-from calendar import THURSDAY
-
 from pygame import mixer
 import pygame, sys, subprocess
 import pygame.freetype
@@ -14,10 +12,12 @@ class Colors:
     white = (255, 255, 255)
     gray = (168, 168, 168)
     dark_gray = (36, 36, 36)
+    muted_dark_gray = (76, 76, 76)
     muted_gray = (124, 124, 124)
     muted_red = (150, 50, 50)
     muted_green = (50, 150, 50)
     muted_blue = (50, 50, 150)
+    cyan = (250, 230, 255)
 
 
 class Texts:
@@ -118,6 +118,7 @@ class Player:
 
     def shoot(self, player):
         if (self.bullets > 0):
+            play_sound_effect('shot.mp3', 0.2)
             self.bullets -= 1
             if (player == 1):
                 bullet_hole = Images(8, self.posX, self.posY, 'bulletholered.png')
@@ -129,36 +130,44 @@ class Player:
                 self.checkHit([target1, target2, target3, ammo1, ammo2, extra_time1, bomb1, bolt1])
             self.old_posX = self.posX
             self.old_posY = self.posY
+        else:
+            play_sound_effect('no_bullet.mp3', 0.5)
 
     def checkHit(self, targets):
         for target in targets:
-            if (target.posX - 6 < self.posX < target.posX + 36 and target.posY - 6 < self.posY < target.posY + 36):
-                target.reset()
+            if (target.posX - 6 < self.posX < target.posX + 40 and target.posY - 6 < self.posY < target.posY + 40):
                 if (target.__class__.__name__ == 'Ammo'):
-                    play_sound_effect('powerup.mp3', 0.5)
+                    play_sound_effect('add_bullet.mp3', 0.5)
+                    target.reset()
                     self.bullets += 15
                 elif (target.__class__.__name__ == 'Time'):
                     play_sound_effect('powerup.mp3', 0.5)
+                    target.reset()
                     self.extra_time += 10
                 elif (target.__class__.__name__ == 'Bomb'):
                     play_sound_effect('bomb.mp3', 0.5)
+                    bomb1.effect()
+                    target.reset()
                     self.score -= 3
                 elif (target.__class__.__name__ == 'Bolt'):
                     global thunder_hit
                     play_sound_effect('bolt.mp3', 0.8)
                     thunder_hit = True
+                    bolt1.effect()
                     target1.reset()
                     target2.reset()
                     target3.reset()
+                    target.reset()
                     self.score += 3
                 else:
                     play_sound_effect('powerup.mp3', 0.5)
                     self.score += self.calScore()
+                    target.reset()
                 return True
 
     def calScore(self):
         distance = math.sqrt((self.posX - self.old_posX) ** 2 + (self.posY - self.old_posY) ** 2)
-        return int((distance // 130 + 1))
+        return int((distance // 100 + 1))
 
 
 class Target:
@@ -200,18 +209,28 @@ class Bomb(Target):
         target = Images(36, self.posX, self.posY, 'bomb.png')
         target.displayImage()
 
+    def effect(self):
+        explosion = Images(128, self.posX - 46, self.posY - 46, 'explosion.png')
+        explosion.displayImage()
+
 
 class Bolt(Target):
     def __init__(self):
         super().__init__()
 
     def displayTarget(self):
-        target = Images(36, self.posX, self.posY, 'lightningBolt.png')
+        target = Images(48, self.posX, self.posY, 'lightningBolt.png')
         target.displayImage()
 
     def reset(self):
         self.posX = random.randint(100, 1200)
         self.posY = random.randint(250, 650)
+
+    def effect(self):
+        targets = [target1, target2, target3]
+        screen.fill(Colors.muted_dark_gray)
+        for target in targets:
+            pygame.draw.rect(screen, Colors.gray, (target.posX + 14, 195, 7, abs(200 - target.posY) + 23))
 
 
 class Actions:
@@ -375,7 +394,7 @@ if __name__ == "__main__":
             ammo1.displayTarget()
             ammo2.displayTarget()
             bomb1.displayTarget()
-            if (e_time < 55 and e_time > 45 and thunder_hit == False):
+            if (e_time < 35 and e_time > 15 and thunder_hit == False):
                 bolt1.displayTarget()
             pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
             #  //////////////////////////////////////////// DISPLAY SHOTS ////////////////////////////////////////////
@@ -395,7 +414,6 @@ if __name__ == "__main__":
                 if (player1.time > 0):
                     # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_SPACE):
-                        play_sound_effect('shot.mp3', 0.2)
                         player1.shoot(1)
                     # ///////////////////////////////////////// PLAYER 1 MOVEMENTS /////////////////////////////////////////
                     if (event.key == pygame.K_w):
@@ -409,7 +427,6 @@ if __name__ == "__main__":
                 if (player2.time > 0):
                     # ///////////////////////////////////////// ENTER (PLAYER 2 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_RETURN):
-                        play_sound_effect('shot.mp3', 0.2)
                         player2.shoot(2)
                     # ///////////////////////////////////////// PLAYER 2 MOVEMENTS /////////////////////////////////////////
                     if (event.key == pygame.K_UP):
