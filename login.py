@@ -113,6 +113,7 @@ if __name__ == "__main__":
     pygame.key.set_repeat(300, 50)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    bg_img = pygame.image.load('assets/bg_empty.png')
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 24)
     mixer.music.load('assets/login.sf.mp3')
     mixer.music.play(-1)
@@ -120,7 +121,6 @@ if __name__ == "__main__":
     player1_input = pygame_textinput.TextInputVisualizer()
     player2_input = pygame_textinput.TextInputVisualizer()
     initializeInputs()
-    bg_img = pygame.image.load('assets/bg.jpg')
     clock = pygame.time.Clock()
     running = True
     active_input = 0

@@ -101,19 +101,19 @@ class Player:
 
     def moveUp(self):
         # DONT GO OVER UI
-        if (self.posY > 200):
+        if (self.posY > 220):
             self.posY -= 10
 
     def moveDown(self):
-        if (self.posY < 680):
+        if (self.posY < 665):
             self.posY += 10
 
     def moveLeft(self):
-        if (self.posX > 30):
+        if (self.posX > 45):
             self.posX -= 10
 
     def moveRight(self):
-        if (self.posX < 1240):
+        if (self.posX < 1225):
             self.posX += 10
 
     def shoot(self, player):
@@ -179,8 +179,8 @@ class Target:
         target.displayImage()
 
     def reset(self):
-        self.posX = random.randint(100, 1200)
-        self.posY = random.randint(250, 650)
+        self.posX = random.randint(150, 1150)
+        self.posY = random.randint(300, 590)
 
 
 class Ammo(Target):
@@ -225,22 +225,24 @@ class Bolt(Target):
     def reset(self):
         self.posX = random.randint(100, 1200)
         self.posY = random.randint(250, 650)
+
     def effect(self):
         targets = [target1, target2, target3]
-         
+
         for target in targets:
-            
-            dots = [(target.posX + 18, 195)]  
+
+            dots = [(target.posX + 18, 195)]
             y = 195
             while y < target.posY + 18:
-                
+
                 y += random.randint(10, 20)
                 if y > target.posY + 18:
-                    y = target.posY + 18  
+                    y = target.posY + 18
                 dots.append((target.posX + 18 + random.randint(-10, 10), y))
-            
-            pygame.draw.lines(screen, Colors.cyan, False, dots, 5)  
+
+            pygame.draw.lines(screen, Colors.cyan, False, dots, 5)
             pygame.draw.lines(screen, Colors.white, False, dots, 3)
+
 
 class Actions:
     @staticmethod
@@ -354,7 +356,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     start_time = pygame.time.get_ticks()
-
+    bg_img = pygame.image.load('assets/bg_game.png')
     # //////////////////////////////////////////// INITIALIZE MIXER ////////////////////////////////////////////
     mixer.music.load('assets/game.sf.mp3')
     mixer.music.set_volume(0.3)
@@ -385,7 +387,7 @@ if __name__ == "__main__":
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(90)
-        screen.fill(Colors.dark_gray)
+        screen.blit(bg_img, (0, 0))
         # //////////////////////////////////////////// INITIALIZE TIMER ////////////////////////////////////////////
         e_time = 60 - (pygame.time.get_ticks() - start_time) // 1000
         player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
@@ -405,7 +407,7 @@ if __name__ == "__main__":
             bomb1.displayTarget()
             if (e_time < 35 and e_time > 15 and thunder_hit == False):
                 bolt1.displayTarget()
-            pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
+            # pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
             #  //////////////////////////////////////////// DISPLAY SHOTS ////////////////////////////////////////////
             for bulletHoleP1 in player1.bulletHoles:
                 bulletHoleP1.displayImage()
@@ -421,7 +423,7 @@ if __name__ == "__main__":
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
                 if (player1.time > 0):
-                    if(event.key == pygame.K_e):
+                    if (event.key == pygame.K_e):
                         bolt1.effect()
                     # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_SPACE):
