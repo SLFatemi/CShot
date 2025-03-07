@@ -17,7 +17,7 @@ class Colors:
     muted_red = (150, 50, 50)
     muted_green = (50, 150, 50)
     muted_blue = (50, 50, 150)
-    cyan = (250, 230, 255)
+    cyan = (0, 150, 199)
 
 
 class Texts:
@@ -225,13 +225,22 @@ class Bolt(Target):
     def reset(self):
         self.posX = random.randint(100, 1200)
         self.posY = random.randint(250, 650)
-
     def effect(self):
         targets = [target1, target2, target3]
-        screen.fill(Colors.muted_dark_gray)
+         
         for target in targets:
-            pygame.draw.rect(screen, Colors.gray, (target.posX + 14, 195, 7, abs(200 - target.posY) + 23))
-
+            
+            dots = [(target.posX + 18, 195)]  
+            y = 195
+            while y < target.posY + 18:
+                
+                y += random.randint(10, 20)
+                if y > target.posY + 18:
+                    y = target.posY + 18  
+                dots.append((target.posX + 18 + random.randint(-10, 10), y))
+            
+            pygame.draw.lines(screen, Colors.cyan, False, dots, 5)  
+            pygame.draw.lines(screen, Colors.white, False, dots, 3)
 
 class Actions:
     @staticmethod
@@ -412,6 +421,8 @@ if __name__ == "__main__":
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
                 if (player1.time > 0):
+                    if(event.key == pygame.K_e):
+                        bolt1.effect()
                     # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_SPACE):
                         player1.shoot(1)
