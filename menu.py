@@ -105,7 +105,7 @@ if __name__ == "__main__":
     mixer.music.load('assets/menu.sf.mp3')
     mixer.music.play(-1)
     WIDTH, HEIGHT = 1280, 720
-    bg_img = pygame.image.load('assets/bg.jpg')
+    bg_img = pygame.image.load('assets/bg_empty.png')
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     running = True
