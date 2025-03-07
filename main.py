@@ -188,6 +188,7 @@ def play_sound_once(src):
     sound = pygame.mixer.Sound(f"assets/{src}")
     global end_game_sound_played
     if not end_game_sound_played:
+        mixer.music.stop()
         sound.play()
         end_game_sound_played = True
 
@@ -277,6 +278,9 @@ if __name__ == "__main__":
     pygame.display.set_icon(icon)
     pygame.key.set_repeat(500, 50)
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
+    mixer.music.load('assets/game.sf.mp3')
+    mixer.music.set_volume(0.3)
+    mixer.music.play(-1)
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -301,7 +305,11 @@ if __name__ == "__main__":
     while running:
         clock.tick(90)
         screen.fill(Colors.dark_gray)
-        if (player1.bullets == 0 and player2.bullets == 0) or (player1.time == 0 and player2.time == 0):
+        e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
+        player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
+        player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
+        if (player1.bullets == 0 and player2.bullets == 0) or (player1.time == 0 and player2.time == 0) or (
+                player1.time == 0 and player2.bullets == 0) or (player1.bullets == 0 and player2.time == 0):
             display_gameover_screen(player1.score, player2.score)
         else:
             target1.displayTarget()
@@ -310,9 +318,6 @@ if __name__ == "__main__":
             extra_time1.displayTarget()
             ammo1.displayTarget()
             ammo2.displayTarget()
-            e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
-            player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
-            player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
             pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
             for bulletHoleP1 in player1.bulletHoles:
                 bulletHoleP1.displayImage()
@@ -327,30 +332,32 @@ if __name__ == "__main__":
                 running = False
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
-                # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
-                if (event.key == pygame.K_SPACE):
-                    player1.shoot(1)
-                # ///////////////////////////////////////// PLAYER 1 MOVEMENTS /////////////////////////////////////////
-                if (event.key == pygame.K_w):
-                    player1.moveUp()
-                if (event.key == pygame.K_s):
-                    player1.moveDown()
-                if (event.key == pygame.K_a):
-                    player1.moveLeft()
-                if (event.key == pygame.K_d):
-                    player1.moveRight()
-                # ///////////////////////////////////////// PLAYER 2 MOVEMENTS /////////////////////////////////////////
-                if (event.key == pygame.K_UP):
-                    player2.moveUp()
-                if (event.key == pygame.K_DOWN):
-                    player2.moveDown()
-                if (event.key == pygame.K_LEFT):
-                    player2.moveLeft()
-                if (event.key == pygame.K_RIGHT):
-                    player2.moveRight()
-                # ///////////////////////////////////////// ENTER (PLAYER 2 SHOOTING) /////////////////////////////////////////
-                if (event.key == pygame.K_RETURN):
-                    player2.shoot(2)
+                if (player1.time > 0):
+                    # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
+                    if (event.key == pygame.K_SPACE):
+                        player1.shoot(1)
+                    # ///////////////////////////////////////// PLAYER 1 MOVEMENTS /////////////////////////////////////////
+                    if (event.key == pygame.K_w):
+                        player1.moveUp()
+                    if (event.key == pygame.K_s):
+                        player1.moveDown()
+                    if (event.key == pygame.K_a):
+                        player1.moveLeft()
+                    if (event.key == pygame.K_d):
+                        player1.moveRight()
+                if (player2.time > 0):
+                    # ///////////////////////////////////////// PLAYER 2 MOVEMENTS /////////////////////////////////////////
+                    if (event.key == pygame.K_UP):
+                        player2.moveUp()
+                    if (event.key == pygame.K_DOWN):
+                        player2.moveDown()
+                    if (event.key == pygame.K_LEFT):
+                        player2.moveLeft()
+                    if (event.key == pygame.K_RIGHT):
+                        player2.moveRight()
+                    # ///////////////////////////////////////// ENTER (PLAYER 2 SHOOTING) /////////////////////////////////////////
+                    if (event.key == pygame.K_RETURN):
+                        player2.shoot(2)
             elif (event.type == ammo_spawn):
                 ammo1.reset()
                 ammo2.reset()
