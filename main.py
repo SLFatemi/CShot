@@ -131,6 +131,7 @@ class Player:
     def checkHit(self, targets):
         for target in targets:
             if (target.posX - 6 < self.posX < target.posX + 36 and target.posY - 6 < self.posY < target.posY + 36):
+                play_sound_effect('powerup.mp3', 0.5)
                 target.reset()
                 if (target.__class__.__name__ == 'Ammo'):
                     self.bullets += 15
@@ -193,6 +194,12 @@ def play_sound_once(src):
         end_game_sound_played = True
 
 
+def play_sound_effect(src, vol):
+    sound = pygame.mixer.Sound(f'assets/{src}')
+    sound.set_volume(vol)
+    sound.play()
+
+
 def display_GUI_STATIC():
     player1_text = Texts('Player1', 145, 80, Colors.muted_red, 20)
     player1_text.displayText()
@@ -241,7 +248,7 @@ def display_GUI_UPDATE(p1_bullet_count=20, p1_score=0, p2_bullet_count=20, p2_sc
     player2_score_emoji.displayImage()
 
 
-def display_gameover_screen(p1_score, p2_score):
+def display_gameOver_screen(p1_score, p2_score):
     screen.fill(Colors.dark_gray)
     go_text = Texts("The Game is Over!", WIDTH // 2, HEIGHT // 4, Colors.white, 40)
     go_text.displayText()
@@ -270,32 +277,36 @@ def display_gameover_screen(p1_score, p2_score):
 
 
 if __name__ == "__main__":
+    # //////////////////////////////////////////// INITIALIZE PYGAME ////////////////////////////////////////////
     pygame.init()
     pygame.display.set_caption('CShot')
     pygame.font.init()
-    end_game_sound_played = False
     icon = pygame.image.load('assets/icon.jpg')
     pygame.display.set_icon(icon)
     pygame.key.set_repeat(500, 50)
     font = pygame.font.Font('assets/PressStart2P-Regular.ttf', 50)
+    WIDTH, HEIGHT = 1280, 720
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()
+
+    # //////////////////////////////////////////// INITIALIZE MIXER ////////////////////////////////////////////
     mixer.music.load('assets/game.sf.mp3')
     mixer.music.set_volume(0.3)
     mixer.music.play(-1)
-    WIDTH, HEIGHT = 1280, 720
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
-    clock = pygame.time.Clock()
-    start_time = pygame.time.get_ticks()
-    count_down_time = 60
+    # //////////////////////////////////////////// INITIALIZE OBJECTS ////////////////////////////////////////////
+    end_game_sound_played = False
     player1 = Player()
     player2 = Player()
-    # INITIAL TARGETS
+
     target1 = Target()
     target2 = Target()
     target3 = Target()
     ammo1 = Ammo()
     ammo2 = Ammo()
     extra_time1 = Time()
+
+    # //////////////////////////////////////////// CREATE CUSTOM EVENTS ////////////////////////////////////////////
     ammo_spawn = pygame.USEREVENT + 1
     time_spawn = pygame.USEREVENT + 2
     pygame.time.set_timer(ammo_spawn, 10000)
@@ -305,13 +316,16 @@ if __name__ == "__main__":
     while running:
         clock.tick(90)
         screen.fill(Colors.dark_gray)
-        e_time = count_down_time - (pygame.time.get_ticks() - start_time) // 1000
+        # //////////////////////////////////////////// INITIALIZE TIMER ////////////////////////////////////////////
+        e_time = 60 - (pygame.time.get_ticks() - start_time) // 1000
         player1.time = e_time + player1.extra_time if e_time + player1.extra_time > 0 else 0
         player2.time = e_time + player2.extra_time if e_time + player2.extra_time > 0 else 0
+        # //////////////////////////////////////////// CHECK END GAME CONDITIONS ////////////////////////////////////////////
         if (player1.bullets == 0 and player2.bullets == 0) or (player1.time == 0 and player2.time == 0) or (
                 player1.time == 0 and player2.bullets == 0) or (player1.bullets == 0 and player2.time == 0):
-            display_gameover_screen(player1.score, player2.score)
+            display_gameOver_screen(player1.score, player2.score)
         else:
+            # //////////////////////////////////////////// DISPLAY TARGETS ////////////////////////////////////////////
             target1.displayTarget()
             target2.displayTarget()
             target3.displayTarget()
@@ -319,9 +333,10 @@ if __name__ == "__main__":
             ammo1.displayTarget()
             ammo2.displayTarget()
             pygame.draw.rect(screen, Colors.muted_gray, (30, 195, 1220, 495), 2)
+            #  //////////////////////////////////////////// DISPLAY SHOTS ////////////////////////////////////////////
             for bulletHoleP1 in player1.bulletHoles:
                 bulletHoleP1.displayImage()
-            #  DISPLAY SHOTS
+
             for bulletHoleP2 in player2.bulletHoles:
                 bulletHoleP2.displayImage()
             display_GUI_STATIC()
@@ -335,6 +350,7 @@ if __name__ == "__main__":
                 if (player1.time > 0):
                     # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_SPACE):
+                        play_sound_effect('shot.mp3', 0.2)
                         player1.shoot(1)
                     # ///////////////////////////////////////// PLAYER 1 MOVEMENTS /////////////////////////////////////////
                     if (event.key == pygame.K_w):
@@ -346,6 +362,10 @@ if __name__ == "__main__":
                     if (event.key == pygame.K_d):
                         player1.moveRight()
                 if (player2.time > 0):
+                    # ///////////////////////////////////////// ENTER (PLAYER 2 SHOOTING) /////////////////////////////////////////
+                    if (event.key == pygame.K_RETURN):
+                        play_sound_effect('shot.mp3', 0.2)
+                        player2.shoot(2)
                     # ///////////////////////////////////////// PLAYER 2 MOVEMENTS /////////////////////////////////////////
                     if (event.key == pygame.K_UP):
                         player2.moveUp()
@@ -355,9 +375,7 @@ if __name__ == "__main__":
                         player2.moveLeft()
                     if (event.key == pygame.K_RIGHT):
                         player2.moveRight()
-                    # ///////////////////////////////////////// ENTER (PLAYER 2 SHOOTING) /////////////////////////////////////////
-                    if (event.key == pygame.K_RETURN):
-                        player2.shoot(2)
+            # //////////////////////////////////////////// CALL CUSTOM EVENTS ////////////////////////////////////////////
             elif (event.type == ammo_spawn):
                 ammo1.reset()
                 ammo2.reset()
