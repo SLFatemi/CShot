@@ -241,7 +241,7 @@ class Bolt(Target):
                 dots.append((target.posX + 18 + random.randint(-10, 10), y))
 
             pygame.draw.lines(screen, Colors.cyan, False, dots, 12)
-            pygame.draw.lines(screen, Colors.white, False, dots, 7)
+            pygame.draw.lines(screen, Colors.white, False, dots, 8)
 
 
 class Actions:
