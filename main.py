@@ -423,8 +423,8 @@ if __name__ == "__main__":
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
                 if (player1.time > 0):
-                    if (event.key == pygame.K_e):
-                        bolt1.effect()
+                    # if (event.key == pygame.K_e):
+                    #     bolt1.effect()
                     # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_SPACE):
                         player1.shoot(1)
