@@ -98,6 +98,8 @@ class Player:
         self.bulletHoles = []
         self.time = time
         self.extra_time = 0
+        # ////////////////// ADDITIONAL POINTS FOR CONSECUTIVE SUCCESSFUL SHOTS //////////////////
+        self.successful_shot = False
 
     def moveUp(self):
         # DONT GO OVER UI
@@ -162,12 +164,17 @@ class Player:
                 else:
                     play_sound_effect('powerup.mp3', 0.5)
                     self.score += self.calScore()
+                    self.successful_shot = True
                     target.reset()
                 return True
+            self.successful_shot = False
 
     def calScore(self):
         distance = math.sqrt((self.posX - self.old_posX) ** 2 + (self.posY - self.old_posY) ** 2)
-        return int((distance // 100 + 1))
+        if (self.successful_shot):
+            return int((distance // 100 + 1)) + 3
+        else:
+            return int((distance // 100 + 1))
 
 
 class Target:
