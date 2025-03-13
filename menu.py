@@ -33,7 +33,7 @@ class Texts:
 
 class Buttons:
     # Helper class for displaying Buttons
-    def __init__(self, text, posX, posY, width, height, background_color, hover_color, text_color, text_size, has_background = True, 
+    def __init__(self, text, posX, posY, width, height, background_color, hover_color, text_color, text_size,
                  action=None):
         self.text = text
         self.posX = posX
@@ -44,7 +44,6 @@ class Buttons:
         self.text_color = text_color
         self.h_color = hover_color
         self.font_size = text_size
-        self.has_background = has_background
         self.action = action
 
     def displayButton(self):
@@ -60,13 +59,11 @@ class Buttons:
         click = pygame.mouse.get_pressed()
 
         if (x < mouse[0] < x + width and y < mouse[1] < y + height):
-            if self.has_background:
-                pygame.draw.rect(screen, h_color, (x, y, width, height), border_radius=2)
+            pygame.draw.rect(screen, h_color, (x, y, width, height), border_radius=2)
             if click[0] == 1 and self.action:
                 self.action()
         else:
-            if self.has_background:
-                pygame.draw.rect(screen, background_color, (x, y, width, height), border_radius=2)
+            pygame.draw.rect(screen, background_color, (x, y, width, height), border_radius=2)
 
         content.displayText()
 
@@ -82,9 +79,6 @@ class Actions:
         subprocess.Popen(["python", "login.py"])
         pygame.quit()
         sys.exit()
-    @staticmethod
-    def show_credit():
-        return True
 
 
 class Images:
@@ -117,50 +111,25 @@ if __name__ == "__main__":
     running = True
 
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
-    show_credits = False  
     while running:
         clock.tick(144)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
         screen.fill(Colors.dark_gray)
         screen.blit(bg_img, (0, 0))
-
-        if show_credits:
-            
-            credits_title = Texts("Credits", WIDTH // 2, 200, Colors.white, 60)
-            credits_title.displayText()
-
-            credit_text1 = Texts("", WIDTH // 2, 350, Colors.muted_gray, 36)
-            credit_text1.displayText()
-
-            credit_text2 = Texts("Designed by Sina Fatemi and Amir Sajedi", WIDTH // 4, 450, Colors.muted_gray, )
-            credit_text2.displayText()
-
-            backButton = Buttons("Back", WIDTH // 2, 600, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray, 36,
-                                 lambda: globals().update(show_credits=False))
-            backButton.displayButton()
-        else:
-            gameName = Texts('C', 560, 172, Colors.muted_red, 210)
-            gameName.displayText()
-            gameName = Texts('Shot', 677, 162, Colors.white, 75)
-            gameName.displayText()
-            gameName_emoji = Images(118, WIDTH // 2 + 33, 94, 'logo.png')
-            gameName_emoji.displayImage()
-
-            startButton = Buttons("Start", WIDTH // 2, 395, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
-                                  Actions.start_game)
-            exitButton = Buttons("Exit", WIDTH // 2, 495, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray, 36,
-                                 Actions.exit_game)
-            creditsButton = Buttons("Credits", WIDTH // 2, 595, 150, 50, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray, 24,has_background=False,
-                                    action=lambda: globals().update(show_credits=True))
-
-            startButton.displayButton()
-            exitButton.displayButton()
-            creditsButton.displayButton()
-
-        
-        
+        gameName = Texts('C', 560, 172, Colors.muted_red, 210)
+        gameName.displayText()
+        gameName = Texts('Shot', 677, 162, Colors.white, 75)
+        gameName.displayText()
+        gameName_emoji = Images(118, WIDTH // 2 + 33, 94, 'logo.png')
+        gameName_emoji.displayImage()
+        startButton = Buttons("Start", WIDTH // 2, 395, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
+                              Actions.start_game)
+        exitButton = Buttons("Exit", WIDTH // 2, 495, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray,
+                             36,
+                             Actions.exit_game)
+        startButton.displayButton()
+        exitButton.displayButton()
         pygame.display.flip()
     pygame.quit()

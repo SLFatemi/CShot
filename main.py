@@ -98,6 +98,8 @@ class Player:
         self.bulletHoles = []
         self.time = time
         self.extra_time = 0
+        # ////////////////// ADDITIONAL POINTS FOR CONSECUTIVE SUCCESSFUL SHOTS //////////////////
+        self.successful_shot = False
 
     def moveUp(self):
         # DONT GO OVER UI
@@ -162,12 +164,17 @@ class Player:
                 else:
                     play_sound_effect('powerup.mp3', 0.5)
                     self.score += self.calScore()
+                    self.successful_shot = True
                     target.reset()
                 return True
+            self.successful_shot = False
 
     def calScore(self):
         distance = math.sqrt((self.posX - self.old_posX) ** 2 + (self.posY - self.old_posY) ** 2)
-        return int((distance // 100 + 1))
+        if (self.successful_shot):
+            return int((distance // 100 + 1)) + 3
+        else:
+            return int((distance // 100 + 1))
 
 
 class Target:
@@ -231,17 +238,17 @@ class Bolt(Target):
 
         for target in targets:
 
-            dots = [(target.posX + 18, 195)]
-            y = 195
+            dots = [(target.posX + 18, 215)]
+            y = 215
             while y < target.posY + 18:
 
-                y += random.randint(10, 20)
+                y += random.randint(10, 30)
                 if y > target.posY + 18:
                     y = target.posY + 18
                 dots.append((target.posX + 18 + random.randint(-10, 10), y))
 
-            pygame.draw.lines(screen, Colors.cyan, False, dots, 5)
-            pygame.draw.lines(screen, Colors.white, False, dots, 3)
+            pygame.draw.lines(screen, Colors.cyan, False, dots, 12)
+            pygame.draw.lines(screen, Colors.white, False, dots, 8)
 
 
 class Actions:
@@ -423,8 +430,8 @@ if __name__ == "__main__":
             # USER USED A KEY
             elif (event.type == pygame.KEYDOWN):
                 if (player1.time > 0):
-                    if (event.key == pygame.K_e):
-                        bolt1.effect()
+                    # if (event.key == pygame.K_e):
+                    #     bolt1.effect()
                     # ///////////////////////////////////////// SPACE (PLAYER 1 SHOOTING) /////////////////////////////////////////
                     if (event.key == pygame.K_SPACE):
                         player1.shoot(1)
