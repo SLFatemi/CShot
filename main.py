@@ -88,7 +88,8 @@ class Images:
 
 
 class Player:
-    def __init__(self, score=0, bullets=20, time=60):
+    def __init__(self, name='NO_NAME', score=0, bullets=20, time=60):
+        self.name = name[0].upper() + name[1:]
         self.score = score
         self.bullets = bullets
         self.posX = random.randint(100, 1200)
@@ -174,7 +175,6 @@ class Player:
 
     def calScore(self):
         distance = math.sqrt((self.posX - self.old_posX) ** 2 + (self.posY - self.old_posY) ** 2)
-        print(self.successful_shot)
         if (self.successful_shot):
             return int((distance // 100 + 1)) + 3
         else:
@@ -279,11 +279,11 @@ def play_sound_effect(src, vol):
 
 
 def display_GUI_STATIC():
-    player1_text = Texts('Player1', 145, 80, Colors.muted_red, 20)
+    player1_text = Texts(f'{player1.name}'.ljust(8), 145, 80, Colors.muted_red, 20)
     player1_text.displayText()
     player1_emoji = Images(36, 18, 60, 'player1.png')
     player1_emoji.displayImage()
-    player2_text = Texts('Player2', WIDTH - 140, 80, Colors.muted_blue, 20)
+    player2_text = Texts(f'{player2.name}'.ljust(8), WIDTH - 140, 80, Colors.muted_blue, 20)
     player2_text.displayText()
     player2_emoji = Images(36, WIDTH - 268, 60, 'player2.png')
     player2_emoji.displayImage()
@@ -331,17 +331,17 @@ def display_gameOver_screen(p1_score, p2_score):
     go_text = Texts("The Game is Over!", WIDTH // 2, HEIGHT // 4, Colors.white, 40)
     go_text.displayText()
 
-    p1_final_score = Texts(f"Player 1 Score: {p1_score}", WIDTH // 2, HEIGHT // 2 - 50, Colors.muted_red, 20)
+    p1_final_score = Texts(f"{player1.name}'s Score: {p1_score}", WIDTH // 2, HEIGHT // 2 - 50, Colors.muted_red, 20)
     p1_final_score.displayText()
-    p2_final_score = Texts(f"Player 2 Score: {p2_score}", WIDTH // 2, HEIGHT // 2 + 50, Colors.muted_blue, 20)
+    p2_final_score = Texts(f"{player2.name}'s Score: {p2_score}", WIDTH // 2, HEIGHT // 2 + 50, Colors.muted_blue, 20)
     p2_final_score.displayText()
     # ////Winning exception and condition
     if p1_score > p2_score:
-        Win_text = Texts("Player 1 Wins! Brutal.", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_red, 25)
+        Win_text = Texts(f"{player1.name} Wins! Brutal.", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_red, 25)
         Win_text.displayText()
         play_sound_once('win.sf.mp3')
     elif p2_score > p1_score:
-        Win_text = Texts("Player 2 Wins! Brutal", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_blue, 25)
+        Win_text = Texts(f"{player2.name} Wins! Brutal", WIDTH // 2, HEIGHT // 2 + 150, Colors.muted_blue, 25)
         Win_text.displayText()
         play_sound_once('win.sf.mp3')
     else:
@@ -375,8 +375,8 @@ if __name__ == "__main__":
     # //////////////////////////////////////////// INITIALIZE OBJECTS ////////////////////////////////////////////
     end_game_sound_played = False
     thunder_hit = False
-    player1 = Player()
-    player2 = Player()
+    player1 = Player(users[0])
+    player2 = Player(users[1])
 
     target1 = Target()
     target2 = Target()
