@@ -1,5 +1,3 @@
-import time
-
 from pygame import mixer
 import pygame, sys, subprocess
 import pygame.freetype
