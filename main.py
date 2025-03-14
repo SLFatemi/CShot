@@ -119,17 +119,18 @@ class Player:
             self.posX += 10
 
     def shoot(self, player):
+        targets = [target1, target2, target3, ammo1, ammo2, extra_time1, bomb1, bolt1]
         if (self.bullets > 0):
             play_sound_effect('shot.mp3', 0.2)
             self.bullets -= 1
             if (player == 1):
                 bullet_hole = Images(8, self.posX, self.posY, 'bulletholered.png')
                 self.bulletHoles.append(bullet_hole)
-                self.checkHit([target1, target2, target3, ammo1, ammo2, extra_time1, bomb1, bolt1])
+                self.checkHit(targets)
             elif (player == 2):
                 bullet_hole = Images(8, self.posX, self.posY, 'bulletholeblue.png')
                 self.bulletHoles.append(bullet_hole)
-                self.checkHit([target1, target2, target3, ammo1, ammo2, extra_time1, bomb1, bolt1])
+                self.checkHit(targets)
             self.old_posX = self.posX
             self.old_posY = self.posY
         else:
@@ -137,6 +138,7 @@ class Player:
 
     def checkHit(self, targets):
         for target in targets:
+            # ///////////////////////// HIT /////////////////////////
             if (target.posX - 6 < self.posX < target.posX + 40 and target.posY - 6 < self.posY < target.posY + 40):
                 if (target.__class__.__name__ == 'Ammo'):
                     play_sound_effect('add_bullet.mp3', 0.5)
@@ -161,16 +163,18 @@ class Player:
                     target3.reset()
                     target.reset()
                     self.score += 3
+                # ////////////////////////// MAIN TARGETS //////////////////////////
                 else:
                     play_sound_effect('powerup.mp3', 0.5)
                     self.score += self.calScore()
                     self.successful_shot = True
                     target.reset()
                 return True
-            self.successful_shot = False
+        self.successful_shot = False
 
     def calScore(self):
         distance = math.sqrt((self.posX - self.old_posX) ** 2 + (self.posY - self.old_posY) ** 2)
+        print(self.successful_shot)
         if (self.successful_shot):
             return int((distance // 100 + 1)) + 3
         else:
