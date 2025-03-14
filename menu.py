@@ -67,9 +67,11 @@ class Buttons:
 
         content.displayText()
 
+
 class GameState:
     MENU = 0
     CREDITS = 1
+
 
 class Actions:
     @staticmethod
@@ -82,7 +84,8 @@ class Actions:
         subprocess.Popen(["python", "login.py"])
         pygame.quit()
         sys.exit()
-    @staticmethod    
+
+    @staticmethod
     def show_credits():
         global current_state
         current_state = GameState.CREDITS
@@ -91,6 +94,7 @@ class Actions:
     def back_to_menu():
         global current_state
         current_state = GameState.MENU
+
 
 class Images:
     def __init__(self, size, posX, posY, src):
@@ -120,8 +124,8 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
     running = True
-    current_state =GameState.MENU
-    
+    current_state = GameState.MENU
+
     # //////////////////////////////////////////// MAIN DRIVER CODE ////////////////////////////////////////////
     while running:
         clock.tick(144)
@@ -137,20 +141,22 @@ if __name__ == "__main__":
             gameName.displayText()
             gameName_emoji = Images(118, WIDTH // 2 + 33, 94, 'logo.png')
             gameName_emoji.displayImage()
-            startButton = Buttons("Start", WIDTH // 2, 345, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray, 48,
-                                Actions.start_game)
-            creditsButton = Buttons("Credits", WIDTH // 2, 450, 265, 70, Colors.muted_gray, Colors.gray, Colors.dark_gray, 36 ,
-                                  Actions.show_credits)
-            exitButton = Buttons("Exit", WIDTH // 2, 545, 210, 70, Colors.dark_gray, Colors.dark_gray, Colors.muted_gray,
-                                36,
-                                Actions.exit_game)
+            startButton = Buttons("Start", WIDTH // 2, 345, 320, 90, Colors.muted_gray, Colors.gray, Colors.dark_gray,
+                                  48,
+                                  Actions.start_game)
+            creditsButton = Buttons("Credits", WIDTH // 2, 450, 305, 70, Colors.muted_gray, Colors.gray,
+                                    Colors.dark_gray, 36,
+                                    Actions.show_credits)
+            exitButton = Buttons("Exit", WIDTH // 2, 545, 210, 70, Colors.dark_gray, Colors.dark_gray,
+                                 Colors.muted_gray,
+                                 36,
+                                 Actions.exit_game)
             startButton.displayButton()
             creditsButton.displayButton()
             exitButton.displayButton()
         elif current_state == GameState.CREDITS:
-         
-            backButton = Buttons("Back", WIDTH // 2, 550, 210, 70, Colors.muted_gray, Colors.gray, Colors.dark_gray, 36,
-                     Actions.back_to_menu)
+            backButton = Buttons("Back", WIDTH // 2, 650, 210, 70, Colors.muted_gray, Colors.gray, Colors.dark_gray, 36,
+                                 Actions.back_to_menu)
             creditsTitle = Texts("Credits", WIDTH // 2, 100, Colors.white, 60)
             creditsTitle.displayText()
             credit1 = Texts("Designed by:", WIDTH // 2, 250, Colors.muted_gray, 30)
@@ -161,9 +167,6 @@ if __name__ == "__main__":
             credit2.displayText()
             credit3.displayText()
             credit4.displayText()
-            
-            backButton = Buttons("Back", WIDTH // 2, 550, 210, 70, Colors.muted_gray, Colors.gray, Colors.dark_gray, 36,
-                               Actions.back_to_menu)
             backButton.displayButton()
         pygame.display.flip()
     pygame.quit()

@@ -23,9 +23,9 @@ In CShot, your crosshair is hidden, meaning you have to guess its position based
 - Time Attack: Race against the clock and maximize your score.
 
 ## 📸 Screenshots
-![CShot Gameplay](./Menu.png) 
+![CShot Gameplay](./menu2.png) 
 
-![CShot Gameplay](./Main.png) 
+![CShot Gameplay](./game2.png) 
 
 
 ## 🔧 Installation & Running the Game
