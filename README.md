@@ -35,6 +35,7 @@ In CShot, your crosshair is hidden, meaning you have to guess its position based
    cd CShot
    
 2. Run the game executable or open the project in your preferred IDE.
+3. BONUS: You can open the CShot folder and run the CShot.exe file for a simple run.
 
 ## 🚀 Future Features
 - More game modes
